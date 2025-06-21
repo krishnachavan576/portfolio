@@ -5,7 +5,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Mail, Phone, MapPin, Send } from "lucide-react"
 
 export default function Contact() {
@@ -16,25 +22,32 @@ export default function Contact() {
     message: "",
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { id, value } = e.target
     setFormData((prev) => ({ ...prev, [id]: value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
     const { name, email, subject, message } = formData
+
+    // Simple validation
+    if (!name || !email || !message) {
+      alert("Please fill in all required fields.")
+      return
+    }
 
     const fullMessage = `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`
     const encodedMessage = encodeURIComponent(fullMessage)
 
-    // Replace with your actual WhatsApp number (with country code, no +)
     const whatsappNumber = "919021447174"
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
 
     window.open(whatsappURL, "_blank")
 
+    // Clear form
     setFormData({ name: "", email: "", subject: "", message: "" })
   }
 
@@ -42,15 +55,23 @@ export default function Contact() {
     <section id="contact" className="py-20 relative">
       <div className="container">
         <div className="flex flex-col items-center mb-12">
-          <div className="inline-block rounded-full bg-teal-500/10 px-3 py-1 text-sm text-teal-500 mb-4">Contact</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-center">Get In Touch</h2>
+          <div className="inline-block rounded-full bg-teal-500/10 px-3 py-1 text-sm text-teal-500 mb-4">
+            Contact
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center">
+            Get In Touch
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Contact Info */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold">Let&apos;s talk about your project</h3>
+            <h3 className="text-2xl font-semibold">
+              Let&apos;s talk about your project
+            </h3>
             <p className="text-muted-foreground">
-              Feel free to reach out if you want to collaborate with me, or simply have a chat.
+              Feel free to reach out if you want to collaborate with me, or
+              simply have a chat.
             </p>
 
             <div className="space-y-4">
@@ -61,7 +82,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-medium">Email</h4>
-                    <p className="text-sm text-muted-foreground">krishnachavan8866@gmail.com</p>
+                    <p className="text-sm text-muted-foreground">
+                      krishnachavan8866@gmail.com
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -73,7 +96,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-medium">Phone</h4>
-                    <p className="text-sm text-muted-foreground">9021447174</p>
+                    <p className="text-sm text-muted-foreground">
+                      9021447174
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -85,17 +110,22 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-medium">Location</h4>
-                    <p className="text-sm text-muted-foreground">Jalna, Maharashtra, India</p>
+                    <p className="text-sm text-muted-foreground">
+                      Jalna, Maharashtra, India
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </div>
 
+          {/* Form */}
           <Card className="border-border/40 bg-black/20 backdrop-blur-sm">
             <CardHeader>
               <CardTitle>Send Message</CardTitle>
-              <CardDescription>Fill out the form below to send me a message</CardDescription>
+              <CardDescription>
+                Fill out the form below to send me a message
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={handleSubmit}>
@@ -110,6 +140,7 @@ export default function Contact() {
                       className="bg-background/50 border-border/40"
                       value={formData.name}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -123,6 +154,7 @@ export default function Contact() {
                       className="bg-background/50 border-border/40"
                       value={formData.email}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -148,9 +180,13 @@ export default function Contact() {
                     className="bg-background/50 border-border/40 min-h-[120px]"
                     value={formData.message}
                     onChange={handleChange}
+                    required
                   />
                 </div>
-                <Button type="submit" className="w-full bg-teal-500 hover:bg-teal-600 text-white">
+                <Button
+                  type="submit"
+                  className="w-full bg-teal-500 hover:bg-teal-600 text-white"
+                >
                   <Send className="mr-2 h-4 w-4" />
                   Send Message
                 </Button>
